@@ -1,0 +1,34 @@
+PrototypalAttribute
+===================
+
+Give your models javascript-esque prototypal methods. When accessing an attribute
+on the prototypal object, the attribute's value is returned if not nil.
+Otherwise, the "linked" object's attribute value is returned.
+
+Example
+=======
+
+class Clipping
+  has_many :saved_clippings
+end
+
+class SavedClipping
+  belongs_to :clipping
+  
+  include Prototypal
+  prototypal_attributes(:clipping, :title, :description)
+end
+
+clipping = Clipping.new(:title => "Base Title", :description => "Base description")
+saved_clipping = SavedClipping.new(
+  :clipping => clipping, 
+  :description => "Saved clipping description"
+)
+
+saved_clipping.title
+=> "Base Title"
+
+saved_clipping.description
+=> "Saved clipping description"
+
+Copyright (c) 2010 Avi Flombaum, released under the MIT license
